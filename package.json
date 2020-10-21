@@ -1,6 +1,6 @@
 {
   "name": "matomo-tracker-react-native",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Stand alone library for using Matomo tracking in React Native and Expo projects.",
   "license": "MIT",
   "repository": "donni106/matomo-tracker-react-native",
@@ -9,5 +9,9 @@
     "matomo",
     "react native",
     "expo"
-  ]
+  ],
+  "author": "Daniel Molnar <dm@tpwd.de>",
+  "bugs": {
+    "url": "https://github.com/donni106/matomo-tracker-react-native/issues"
+  }
 }
