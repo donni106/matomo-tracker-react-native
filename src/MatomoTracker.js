@@ -41,7 +41,7 @@ class MatomoTracker {
    * Tracks app start as action with prefixed 'App' category
    */
   trackAppStart() {
-    this.trackAction({ name: 'App / start' });
+    return this.trackAction({ name: 'App / start' });
   }
 
   /**
@@ -52,7 +52,7 @@ class MatomoTracker {
   trackScreenView(name) {
     if (!name) throw new Error('Error: name is required.');
 
-    this.trackAction({ name: `Screen / ${name}` });
+    return this.trackAction({ name: `Screen / ${name}` });
   }
 
   /**
@@ -66,7 +66,7 @@ class MatomoTracker {
   trackAction({ name }) {
     if (!name) throw new Error('Error: name is required.');
 
-    this.track({ action_name: name });
+    return this.track({ action_name: name });
   }
 
   /**
@@ -87,7 +87,7 @@ class MatomoTracker {
     if (!category) throw new Error('Error: category is required.');
     if (!action) throw new Error('Error: action is required.');
 
-    this.track({ e_c: category, e_a: action, e_n: name, e_v: value });
+    return this.track({ e_c: category, e_a: action, e_n: name, e_v: value });
   }
 
   /**
@@ -105,7 +105,7 @@ class MatomoTracker {
   trackSiteSearch({ keyword, category, count }) {
     if (!keyword) throw new Error('Error: keyword is required.');
 
-    this.track({ search: keyword, search_cat: category, search_count: count });
+    return this.track({ search: keyword, search_cat: category, search_count: count });
   }
 
   /**
@@ -119,7 +119,7 @@ class MatomoTracker {
   trackLink(link) {
     if (!link) throw new Error('Error: link is required.');
 
-    this.track({ link, url: link });
+    return this.track({ link, url: link });
   }
 
   /**
@@ -133,7 +133,7 @@ class MatomoTracker {
   trackDownload(download) {
     if (!download) throw new Error('Error: download is required.');
 
-    this.track({ download, url: download });
+    return this.track({ download, url: download });
   }
 
   /**
@@ -158,11 +158,23 @@ class MatomoTracker {
       }).toString()
     };
 
-    fetch(this.trackerUrl, fetchObj)
-      .catch((err) => console.error('error', err))
-      .finally(
-        () => this.log && console.log('Matomo tracking is sent:', this.trackerUrl, fetchObj)
-      );
+    return fetch(this.trackerUrl, fetchObj)
+      .then((response) => {
+        if (!response.ok) {
+          throw Error(response.statusText);
+        }
+
+        this.log && console.log('Matomo tracking is sent:', this.trackerUrl, fetchObj);
+
+        return response;
+      })
+      .catch((error) => {
+        this.log && console.log('Matomo tracking is not sent:', this.trackerUrl, fetchObj);
+
+        console.warn('Matomo tracking error:', error);
+
+        return error;
+      });
   }
 }
 
