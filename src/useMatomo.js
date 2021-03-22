@@ -1,17 +1,39 @@
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
 
 import { MatomoContext } from './MatomoProvider';
 
 const useMatomo = () => {
   const instance = useContext(MatomoContext);
 
-  const trackAppStart = () => instance.trackAppStart && instance.trackAppStart();
-  const trackScreenView = (params) => instance.trackScreenView && instance.trackScreenView(params);
-  const trackAction = (params) => instance.trackAction && instance.trackAction(params);
-  const trackEvent = (params) => instance.trackEvent && instance.trackEvent(params);
-  const trackSiteSearch = (params) => instance.trackSiteSearch && instance.trackSiteSearch(params);
-  const trackLink = (params) => instance.trackLink && instance.trackLink(params);
-  const trackDownload = (params) => instance.trackDownload && instance.trackDownload(params);
+  const trackAppStart = useCallback(() => instance.trackAppStart && instance.trackAppStart(), [
+    instance
+  ]);
+
+  const trackScreenView = useCallback(
+    (params) => instance.trackScreenView && instance.trackScreenView(params),
+    [instance]
+  );
+
+  const trackAction = useCallback(
+    (params) => instance.trackAction && instance.trackAction(params),
+    [instance]
+  );
+
+  const trackEvent = useCallback((params) => instance.trackEvent && instance.trackEvent(params), [
+    instance
+  ]);
+
+  const trackSiteSearch = useCallback(
+    (params) => instance.trackSiteSearch && instance.trackSiteSearch(params),
+    [instance]
+  );
+
+  const trackLink = useCallback((params) => instance.trackLink && instance.trackLink(params), []);
+
+  const trackDownload = useCallback(
+    (params) => instance.trackDownload && instance.trackDownload(params),
+    [instance]
+  );
 
   return {
     trackAppStart,
