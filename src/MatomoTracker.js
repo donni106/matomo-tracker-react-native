@@ -39,20 +39,26 @@ class MatomoTracker {
 
   /**
    * Tracks app start as action with prefixed 'App' category
+   *
+   * @param {Object} data -
+   * {Object} `userInfo` - Optional data used for tracking different user info, see https://developer.matomo.org/api-reference/tracking-api#optional-user-info.
    */
-  trackAppStart() {
-    return this.trackAction({ name: 'App / start' });
+  trackAppStart({ userInfo = {} } = {}) {
+    return this.trackAction({ name: 'App / start', userInfo });
   }
 
   /**
    * Tracks screen view as action with prefixed 'Screen' category
    *
-   * @param {String} name - The title of the action being tracked. It is possible to use slashes / to set one or several categories for this action. For example, Help / Feedback will create the Action Feedback in the category Help.
+   * @param {Object} data -
+   * {String} name - The title of the action being tracked. It is possible to use slashes / to set one or several categories for this action. For example, Help / Feedback will create the Action Feedback in the category Help.
+   *
+   * {Object} `userInfo` - Optional data used for tracking different user info, see https://developer.matomo.org/api-reference/tracking-api#optional-user-info.
    */
-  trackScreenView(name) {
+  trackScreenView({ name, userInfo = {} }) {
     if (!name) throw new Error('Error: name is required.');
 
-    return this.trackAction({ name: `Screen / ${name}` });
+    return this.trackAction({ name: `Screen / ${name}`, userInfo });
   }
 
   /**
@@ -62,11 +68,13 @@ class MatomoTracker {
    *
    * @param {Object} data -
    * {String} `name` - The title of the action being tracked. It is possible to use slashes / to set one or several categories for this action. For example, Help / Feedback will create the Action Feedback in the category Help.
+   *
+   * {Object} `userInfo` - Optional data used for tracking different user info, see https://developer.matomo.org/api-reference/tracking-api#optional-user-info.
    */
-  trackAction({ name }) {
+  trackAction({ name, userInfo = {} }) {
     if (!name) throw new Error('Error: name is required.');
 
-    return this.track({ action_name: name });
+    return this.track({ action_name: name, ...userInfo });
   }
 
   /**
@@ -82,12 +90,14 @@ class MatomoTracker {
    * {String} `name` - The event name. (eg. a Movie name, or Song name, or File name...)
    *
    * {String} `value` - The event value. Must be a float or integer value (numeric), not a string.
+   *
+   * {Object} `userInfo` - Optional data used for tracking different user info, see https://developer.matomo.org/api-reference/tracking-api#optional-user-info.
    */
-  trackEvent({ category, action, name, value }) {
+  trackEvent({ category, action, name, value, userInfo = {} }) {
     if (!category) throw new Error('Error: category is required.');
     if (!action) throw new Error('Error: action is required.');
 
-    return this.track({ e_c: category, e_a: action, e_n: name, e_v: value });
+    return this.track({ e_c: category, e_a: action, e_n: name, e_v: value, ...userInfo });
   }
 
   /**
@@ -101,11 +111,13 @@ class MatomoTracker {
    * {String} `category` - when `keyword` is specified, you can optionally specify a search category with this parameter.
    *
    * {String} `count` - when `keyword` is specified, we also recommend setting the search_count to the number of search results displayed on the results page. When keywords are tracked with &search_count=0 they will appear in the "No Result Search Keyword" report.
+   *
+   * {Object} `userInfo` - Optional data used for tracking different user info, see https://developer.matomo.org/api-reference/tracking-api#optional-user-info.
    */
-  trackSiteSearch({ keyword, category, count }) {
+  trackSiteSearch({ keyword, category, count, userInfo = {} }) {
     if (!keyword) throw new Error('Error: keyword is required.');
 
-    return this.track({ search: keyword, search_cat: category, search_count: count });
+    return this.track({ search: keyword, search_cat: category, search_count: count, ...userInfo });
   }
 
   /**
@@ -115,11 +127,13 @@ class MatomoTracker {
    *
    * @param {Object} data -
    * {String} `link` - An external URL the user has opened. Used for tracking outlink clicks.
+   *
+   * {Object} `userInfo` - Optional data used for tracking different user info, see https://developer.matomo.org/api-reference/tracking-api#optional-user-info.
    */
-  trackLink(link) {
+  trackLink({ link, userInfo = {} }) {
     if (!link) throw new Error('Error: link is required.');
 
-    return this.track({ link, url: link });
+    return this.track({ link, url: link, ...userInfo });
   }
 
   /**
@@ -129,11 +143,13 @@ class MatomoTracker {
    *
    * @param {Object} data -
    * {String} `download` - URL of a file the user has downloaded. Used for tracking downloads.
+   *
+   * {Object} `userInfo` - Optional data used for tracking different user info, see https://developer.matomo.org/api-reference/tracking-api#optional-user-info.
    */
-  trackDownload(download) {
+  trackDownload({ download, userInfo = {} }) {
     if (!download) throw new Error('Error: download is required.');
 
-    return this.track({ download, url: download });
+    return this.track({ download, url: download, ...userInfo });
   }
 
   /**
@@ -143,10 +159,16 @@ class MatomoTracker {
     if (this.disabled) return;
     if (!data) return;
 
+    // take a possibly given language and delete it from the data object, as we need to pass it in
+    // the headers instead of body params. otherwise it would overwrite the 'Accept-Language' value.
+    const lang = data.lang;
+    delete data.lang;
+
     const fetchObj = {
       method: 'POST',
       headers: {
         Accept: 'application/json',
+        'Accept-Language': lang,
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
       },
       body: new URLSearchParams({
@@ -154,6 +176,7 @@ class MatomoTracker {
         rec: 1,
         apiv: 1,
         uid: this.userId,
+        send_image: 0,
         ...data
       }).toString()
     };
