@@ -85,29 +85,35 @@ Method              | Default                | Description
 
 The following methods are available with the `useMatomo` hook.
 
-### trackAppStart()
+### trackAppStart({ userInfo = {} } = {})
 
 Tracks app start as action with prefixed 'App' category: `App / start`.
 
-### trackScreenView(name)
+Param      | Description
+---------- | -----------
+`userInfo` | Optional data used for tracking different user info, see https://developer.matomo.org/api-reference/tracking-api#optional-user-info.
+
+### trackScreenView({ name, userInfo = {} })
 
 Tracks screen view as action with prefixed 'Screen' category: `Screen / ${name}`
 
-Param  | Description
------- | -----------
-`name` | The title of the action being tracked. It is possible to use slashes / to set one or several categories for this action. For example, Help / Feedback will create the Action Feedback in the category Help.
+Param      | Description
+---------- | -----------
+`name`     | The title of the action being tracked. It is possible to use slashes / to set one or several categories for this action. For example, Help / Feedback will create the Action Feedback in the category Help.
+`userInfo` | Optional data used for tracking different user info, see https://developer.matomo.org/api-reference/tracking-api#optional-user-info.
 
-### trackAction(name)
+### trackAction({ name, userInfo = {} })
 
 Tracks actions
 
 Doc: https://developer.matomo.org/api-reference/tracking-api#recommended-parameters
 
-Param  | Description
------- | -----------
-`name` | The title of the action being tracked. It is possible to use slashes / to set one or several categories for this action. For example, Help / Feedback will create the Action Feedback in the category Help.
+Param      | Description
+---------- | -----------
+`name`     | The title of the action being tracked. It is possible to use slashes / to set one or several categories for this action. For example, Help / Feedback will create the Action Feedback in the category Help.
+`userInfo` | Optional data used for tracking different user info, see https://developer.matomo.org/api-reference/tracking-api#optional-user-info.
 
-### trackEvent({ category, action, name, value })
+### trackEvent({ category, action, name, value, userInfo = {} })
 
 Tracks custom events
 
@@ -119,8 +125,9 @@ Param      | Description
 `action`   | The event action. Must not be empty. (eg. Play, Pause, Duration, Add Playlist, Downloaded, Clicked...)
 `name`     | The event name. (eg. a Movie name, or Song name, or File name...)
 `value`    | The event value. Must be a float or integer value (numeric), not a string.
+`userInfo` | Optional data used for tracking different user info, see https://developer.matomo.org/api-reference/tracking-api#optional-user-info.
 
-### trackSiteSearch({ keyword, category, count })
+### trackSiteSearch({ keyword, category, count, userInfo = {} })
 
 Tracks site search
 
@@ -131,18 +138,20 @@ Param       | Description
 `keyword`   | The Site Search keyword. When specified, the request will not be tracked as a normal pageview but will instead be tracked as a Site Search request.
 `category`  | When `keyword` is specified, you can optionally specify a search category with this parameter.
 `count`     | When `keyword` is specified, it is also recommended setting the search_count to the number of search results displayed on the results page. When keywords are tracked with &search_count=0 they will appear in the "No Result Search Keyword" report.
+`userInfo`  | Optional data used for tracking different user info, see https://developer.matomo.org/api-reference/tracking-api#optional-user-info.
 
-### trackLink(link)
+### trackLink({ link, userInfo = {} })
 
 Tracks outgoing links to other sites
 
 Doc: https://developer.matomo.org/api-reference/tracking-api#optional-action-info-measure-page-view-outlink-download-site-search
 
-Param  | Description
------- | -----------
-`link` | An external URL the user has opened. Used for tracking outlink clicks.
+Param      | Description
+---------- | -----------
+`link`     | An external URL the user has opened. Used for tracking outlink clicks.
+`userInfo` | Optional data used for tracking different user info, see https://developer.matomo.org/api-reference/tracking-api#optional-user-info.
 
-### trackDownload(download)
+### trackDownload({ download, userInfo = {} })
 
 Tracks downloads
 
@@ -151,6 +160,7 @@ Doc: https://developer.matomo.org/api-reference/tracking-api#optional-action-inf
 Param      | Description
 ---------- | -----------
 `download` | URL of a file the user has downloaded. Used for tracking downloads.
+`userInfo` | Optional data used for tracking different user info, see https://developer.matomo.org/api-reference/tracking-api#optional-user-info.
 
 
 ## Changelog

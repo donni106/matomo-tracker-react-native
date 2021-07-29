@@ -7,7 +7,7 @@ const useMatomo = () => {
 
   return useMemo(
     () => ({
-      trackAppStart: () => instance.trackAppStart && instance.trackAppStart(),
+      trackAppStart: (params) => instance.trackAppStart && instance.trackAppStart(params),
       trackScreenView: (params) => instance.trackScreenView && instance.trackScreenView(params),
       trackAction: (params) => instance.trackAction && instance.trackAction(params),
       trackEvent: (params) => instance.trackEvent && instance.trackEvent(params),
