@@ -2,7 +2,7 @@
 
 # Matomo Tracker (React Native/Expo)
 
-![Project version](https://img.shields.io/badge/version-0.2.4-informational.svg?style=flat-square)
+![Project version](https://img.shields.io/badge/version-0.3.0-informational.svg?style=flat-square)
 
 Stand alone library for using Matomo tracking in React Native and Expo projects.
 
@@ -56,8 +56,8 @@ export const App = () => {
     // trackerUrl: 'https://LINK.TO.DOMAIN/tracking.php', // optional, default value: `${urlBase}matomo.php`
     siteId: 1, // required, number matching your Matomo project
     // userId: 'UID76903202' // optional, default value: `undefined`.
-    disabled: __DEV__, // optional, default value: false. Disables all tracking operations if set to true.
-    log: __DEV__  // optional, default value: false. Enables some logs if set to true.
+    // disabled: false, // optional, default value: false. Disables all tracking operations if set to true.
+    // log: false  // optional, default value: false. Enables some logs if set to true.
   });
 
   return (
@@ -169,4 +169,4 @@ Have a look at the [changelog](./CHANGELOG.md) to be up to date with the develop
 
 ---
 
-###### Version: 0.2.4
+###### Version: 0.3.0

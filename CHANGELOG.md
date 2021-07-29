@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v0.3.0]
+
+Pass more params to Matomo Tracking HTTP API
+
+- see https://developer.matomo.org/api-reference/tracking-api#optional-user-info
+  for possible params
+
+### Changed
+
+- **BREAKING** updated four methods to receive a params object while adding optional user info to every method
+  - `trackAppStart()` -> `trackAppStart({ userInfo = {} } = {})`
+  - `trackScreenView(name)` -> `trackScreenView({ name, userInfo = {} })`
+  - `trackLink(link)` -> `trackLink({ link, userInfo = {} })`
+  - `trackDownload(download)` -> `trackDownload({ download, userInfo = {} })`
+- added `send_image: 0` - If set to 0 (send_image=0) Matomo will respond with a
+  HTTP 204 response code instead of a GIF image
+- added `'Accept-Language': lang` - This value is used to detect the visitor's country
+
 ## [v0.2.4]
 
 Memoize `useMatomo` hook
