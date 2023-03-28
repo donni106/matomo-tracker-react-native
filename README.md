@@ -2,7 +2,7 @@
 
 # Matomo Tracker (React Native/Expo)
 
-![Project version](https://img.shields.io/badge/version-0.3.0-informational.svg?style=flat-square)
+![Project version](https://img.shields.io/badge/version-0.3.1-informational.svg?style=flat-square)
 
 Stand alone library for using Matomo tracking in React Native and Expo projects.
 
@@ -169,4 +169,4 @@ Have a look at the [changelog](./CHANGELOG.md) to be up to date with the develop
 
 ---
 
-###### Version: 0.3.0
+###### Version: 0.3.1
