@@ -175,7 +175,7 @@ class MatomoTracker {
         idsite: this.siteId,
         rec: 1,
         apiv: 1,
-        uid: this.userId,
+        ...(this.userId ? { uid: this.userId }: {}),
         send_image: 0,
         ...data
       }).toString()
