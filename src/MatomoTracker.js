@@ -91,13 +91,15 @@ class MatomoTracker {
    *
    * {String} `value` - The event value. Must be a float or integer value (numeric), not a string.
    *
+   * {String} `campaign` - The event related campaign.
+   *
    * {Object} `userInfo` - Optional data used for tracking different user info, see https://developer.matomo.org/api-reference/tracking-api#optional-user-info.
    */
-  trackEvent({ category, action, name, value, userInfo = {} }) {
+  trackEvent({ category, action, name, value, campaign, userInfo = {} }) {
     if (!category) throw new Error('Error: category is required.');
     if (!action) throw new Error('Error: action is required.');
 
-    return this.track({ e_c: category, e_a: action, e_n: name, e_v: value, ...userInfo });
+    return this.track({ e_c: category, e_a: action, e_n: name, e_v: value, mtm_campaign: campaign, ...userInfo });
   }
 
   /**
