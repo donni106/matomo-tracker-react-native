@@ -140,6 +140,7 @@ class MatomoTracker {
    * @param {string} options.action - The event action. Must not be empty. (e.g., Play, Pause, Duration, Add Playlist, Downloaded, Clicked...)
    * @param {string} [options.name] - The event name. (e.g., a Movie name, or Song name, or File name...)
    * @param {number|float} [options.value] - The event value. Must be a float or integer value (numeric), not a string.
+   * @param {string} [options.campaign] - The event related campaign.
    * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information. See {@link https://developer.matomo.org/api-reference/tracking-api#optional-user-info} for details.
    * @throws {Error} Throws an error if the 'category' or 'action' parameters are not provided.
    * @returns {Promise} A Promise that resolves when the event tracking is complete.
@@ -154,7 +155,7 @@ class MatomoTracker {
    *
    * @see {@link https://developer.matomo.org/api-reference/tracking-api#optional-event-trackinghttpsmatomoorgdocsevent-tracking-info|Matomo Tracking API - Event Tracking}
    */
-  trackEvent({ category, action, name, value, userInfo = {} }) {
+  trackEvent({ category, action, name, value, campaign, userInfo = {} }) {
     if (!category) {
       throw new Error('Error: The "category" parameter is required for tracking an event.');
     }
@@ -162,9 +163,15 @@ class MatomoTracker {
       throw new Error('Error: The "action" parameter is required for tracking an event.');
     }
 
-    return this.track({ e_c: category, e_a: action, e_n: name, e_v: value, ...userInfo });
+    return this.track({
+      e_c: category,
+      e_a: action,
+      e_n: name,
+      e_v: value,
+      mtm_campaign: campaign,
+      ...userInfo
+    });
   }
-
 
   /**
    * Tracks a site search.
