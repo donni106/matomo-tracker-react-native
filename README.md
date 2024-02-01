@@ -170,4 +170,4 @@ Have a look at the [changelog](./CHANGELOG.md) to be up to date with the develop
 
 ---
 
-###### Version: 0.3.1
+###### Version: 0.3.2
