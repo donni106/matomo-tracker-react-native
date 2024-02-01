@@ -2,7 +2,7 @@
 
 # Matomo Tracker (React Native/Expo)
 
-![Project version](https://img.shields.io/badge/version-0.3.1-informational.svg?style=flat-square)
+![Project version](https://img.shields.io/badge/version-0.3.2-informational.svg?style=flat-square)
 
 Stand alone library for using Matomo tracking in React Native and Expo projects.
 
@@ -113,7 +113,7 @@ Param      | Description
 `name`     | The title of the action being tracked. It is possible to use slashes / to set one or several categories for this action. For example, Help / Feedback will create the Action Feedback in the category Help.
 `userInfo` | Optional data used for tracking different user info, see https://developer.matomo.org/api-reference/tracking-api#optional-user-info.
 
-### trackEvent({ category, action, name, value, userInfo = {} })
+### trackEvent({ category, action, name, value, campaign, userInfo = {} })
 
 Tracks custom events
 
@@ -125,6 +125,7 @@ Param      | Description
 `action`   | The event action. Must not be empty. (eg. Play, Pause, Duration, Add Playlist, Downloaded, Clicked...)
 `name`     | The event name. (eg. a Movie name, or Song name, or File name...)
 `value`    | The event value. Must be a float or integer value (numeric), not a string.
+`campaign` | The event related campaign.
 `userInfo` | Optional data used for tracking different user info, see https://developer.matomo.org/api-reference/tracking-api#optional-user-info.
 
 ### trackSiteSearch({ keyword, category, count, userInfo = {} })
