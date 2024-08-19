@@ -13,7 +13,9 @@ const useMatomo = () => {
       trackEvent: (params) => instance.trackEvent && instance.trackEvent(params),
       trackSiteSearch: (params) => instance.trackSiteSearch && instance.trackSiteSearch(params),
       trackLink: (params) => instance.trackLink && instance.trackLink(params),
-      trackDownload: (params) => instance.trackDownload && instance.trackDownload(params)
+      trackDownload: (params) => instance.trackDownload && instance.trackDownload(params),
+      updateUserInfo: (params) => instance.updateUserInfo && instance.updateUserInfo(params),
+      removeUserInfo: () => instance.removeUserInfo && instance.removeUserInfo(),
     }),
     [instance]
   );
