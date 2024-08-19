@@ -281,6 +281,13 @@ class MatomoTracker {
   }
 
   /**
+   * This method is used to remove the user information for tracking for entire instance.
+   */
+  removeUserInfo() {
+    this.userInfo = {};
+  }
+
+  /**
    * Sends the tracking data to Matomo.
    *
    * @param {Object} data - The tracking data.
