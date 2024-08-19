@@ -47,6 +47,7 @@ class MatomoTracker {
 
     this.trackerUrl = trackerUrl ?? `${normalizedUrlBase}matomo.php`;
     this.siteId = siteId;
+    this.userInfo = {};
 
     if (userId) {
       this.userId = userId;
@@ -70,7 +71,9 @@ class MatomoTracker {
    * @see https://developer.matomo.org/api-reference/tracking-api#optional-user-info for optional data used for tracking different user info
    */
   trackAppStart({ userInfo = {} } = {}) {
-    return this.trackAction({ name: 'App / start', userInfo });
+    this.updateUserInfo(userInfo);
+
+    return this.trackAction({ name: 'App / start' });
   }
 
   /**
@@ -96,10 +99,10 @@ class MatomoTracker {
     if (!name) {
       throw new Error('Error: The "name" parameter is required for tracking a screen view.');
     }
+    this.updateUserInfo(userInfo);
 
-    return this.trackAction({ name: `Screen / ${name}`, userInfo });
+    return this.trackAction({ name: `Screen / ${name}` });
   }
-
 
   /**
    * Tracks a custom action.
@@ -126,8 +129,9 @@ class MatomoTracker {
     if (!name) {
       throw new Error('Error: The "name" parameter is required for tracking an action.');
     }
+    this.updateUserInfo(userInfo);
 
-    return this.track({ action_name: name, ...userInfo });
+    return this.track({ action_name: name });
   }
 
   /**
@@ -162,6 +166,7 @@ class MatomoTracker {
     if (!action) {
       throw new Error('Error: The "action" parameter is required for tracking an event.');
     }
+    this.updateUserInfo(userInfo);
 
     return this.track({
       e_c: category,
@@ -169,7 +174,6 @@ class MatomoTracker {
       e_n: name,
       e_v: value,
       mtm_campaign: campaign,
-      ...userInfo
     });
   }
 
@@ -200,8 +204,13 @@ class MatomoTracker {
     if (!keyword) {
       throw new Error('Error: The "keyword" parameter is required for tracking a site search.');
     }
+    this.updateUserInfo(userInfo);
 
-    return this.track({ search: keyword, search_cat: category, search_count: count, ...userInfo });
+    return this.track({
+      search: keyword,
+      search_cat: category,
+      search_count: count,
+    });
   }
 
   /**
@@ -229,10 +238,10 @@ class MatomoTracker {
     if (!link) {
       throw new Error('Error: The "link" parameter is required for tracking a link click.');
     }
+    this.updateUserInfo(userInfo);
 
-    return this.track({ link, url: link, ...userInfo });
+    return this.track({ link, url: link });
   }
-
 
   /**
    * Tracks file downloads.
@@ -259,10 +268,17 @@ class MatomoTracker {
     if (!download) {
       throw new Error('Error: The "download" parameter is required for tracking a file download.');
     }
+    this.updateUserInfo(userInfo);
 
-    return this.track({ download, url: download, ...userInfo });
+    return this.track({ download, url: download });
   }
 
+  /**
+   * This method is used to update the user information for tracking for entire instance.
+   */
+  updateUserInfo(newUserInfo) {
+    this.userInfo = { ...this.userInfo, ...newUserInfo };
+  }
 
   /**
    * Sends the tracking data to Matomo.
@@ -290,9 +306,10 @@ class MatomoTracker {
         idsite: this.siteId,
         rec: 1,
         apiv: 1,
-        ...(this.userId ? { uid: this.userId }: {}),
+        ...(this.userId ? { uid: this.userId } : {}),
         send_image: 0,
-        ...data
+        ...data,
+        ...this.userInfo,
       }).toString()
     };
 
