@@ -128,6 +128,20 @@ Param      | Description
 `campaign` | The event related campaign.
 `userInfo` | Optional data used for tracking different user info, see https://developer.matomo.org/api-reference/tracking-api#optional-user-info.
 
+### trackContent({ name, piece, target, interaction, userInfo = {} })
+
+Tracks content impressions or interactions
+
+Doc: https://developer.matomo.org/api-reference/tracking-api#optional-content-trackinghttpsmatomoorgdocscontent-tracking-info
+
+Param         | Description
+--------------| -----------
+`name`        | The name of the content. For instance 'Ad Foo Bar'.
+`piece`       | The actual content piece. For instance the path to an image, video, audio, any text.
+`target`      | The target of the content. For instance the URL of a landing page.
+`interaction` | The name of the interaction with the content. For instance a 'click'.
+`userInfo`    | Optional data used for tracking different user info, see https://developer.matomo.org/api-reference/tracking-api#optional-user-info.
+
 ### trackSiteSearch({ keyword, category, count, userInfo = {} })
 
 Tracks site search

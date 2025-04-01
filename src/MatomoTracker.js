@@ -178,6 +178,44 @@ class MatomoTracker {
   }
 
   /**
+   * Tracks a custom content.
+   *
+   * This method is used to record specific content impressions or interactions in your application, providing insights into user interactions.
+   *
+   * @param {Object} options - Options for tracking the content.
+   * @param {string} options.name - The name of the content. For instance 'Ad Foo Bar'.
+   * @param {string} [options.piece] - The actual content piece. For instance the path to an image, video, audio, any text.
+   * @param {string} [options.target] - The target of the content. For instance the URL of a landing page.
+   * @param {string} [options.interaction] - The name of the interaction with the content. For instance a 'click'.
+   * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information. See {@link https://developer.matomo.org/api-reference/tracking-api#optional-user-info} for details.
+   * @throws {Error} Throws an error if the 'name' is not provided.
+   * @returns {Promise} A Promise that resolves when the content tracking is complete.
+   *
+   * @example
+   * // Tracking a basic content impression
+   * trackContent({ name: "preview-liveboard", piece: "Malaysia", target: "https://dummy.matomo.org/liveboard/malaysia") });
+   *
+   * @example
+   * // Tracking a content interaction with user information
+   * trackContent({ name: "preview-liveboard", interaction: "tap", piece: "Malaysia", target: "https://dummy.matomo.org/liveboard/malaysia", userInfo: { uid: '123456'} });
+   *
+   * @see {@link https://developer.matomo.org/api-reference/tracking-api#optional-content-trackinghttpsmatomoorgdocscontent-tracking-info|Matomo Tracking API - Content Tracking}
+   */
+  trackContent({ name, piece, target, interaction, userInfo = {} }) {
+    if (!name) {
+      throw new Error('Error: The "name" parameter is required for tracking a content.');
+    }
+    this.updateUserInfo(userInfo);
+
+    return this.track({
+      c_n: name,
+      c_p: piece,
+      c_t: target,
+      c_i: interaction,
+    });
+  }
+
+  /**
    * Tracks a site search.
    *
    * This method is used to record user searches on your site, providing valuable insights into user behavior.
