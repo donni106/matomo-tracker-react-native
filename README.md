@@ -163,6 +163,20 @@ Param      | Description
 `download` | URL of a file the user has downloaded. Used for tracking downloads.
 `userInfo` | Optional data used for tracking different user info, see https://developer.matomo.org/api-reference/tracking-api#optional-user-info.
 
+### updateUserInfo({ userInfo = {} })
+
+Updates user information for tracking purposes.
+
+Doc: https://developer.matomo.org/api-reference/tracking-api#optional-user-info
+
+Param      | Description
+---------- | -----------
+`userInfo` | Optional data used for tracking different user info, see https://developer.matomo.org/api-reference/tracking-api#optional-user-info.
+
+### removeUserInfo()
+
+Removes user information for tracking purposes.
+
 
 ## Changelog
 
