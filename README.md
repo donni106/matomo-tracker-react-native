@@ -169,10 +169,6 @@ Param      | Description
 Have a look at the [changelog](./CHANGELOG.md) to be up to date with the development process.
 
 
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=donni106/matomo-tracker-react-native&type=Date)](https://star-history.com/#donni106/matomo-tracker-react-native&Date)
-
 ---
 
 ###### Version: 0.3.2
