@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v0.3.3]
+
+Adjust tracking methods
+
+### Changed
+
+- added methods to update user infos
+- added content tracking functionality
+- added URL parameter to tracking methods
+
 ## [v0.3.2]
 
 Add campaign option to `trackEvent`
