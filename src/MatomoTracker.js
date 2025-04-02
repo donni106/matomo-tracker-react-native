@@ -83,6 +83,7 @@ class MatomoTracker {
    *
    * @param {Object} options - Options for tracking the screen view.
    * @param {string} options.name - The title of the screen being tracked. Use slashes (/) to set one or several categories for this screen. For example, 'Help / Feedback' will create the Action 'Feedback' in the category 'Help'.
+   * @param {string} [options.url] - The full URL for the current action.
    * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information. See {@link https://developer.matomo.org/api-reference/tracking-api#optional-user-info} for details.
    * @throws {Error} Throws an error if the 'name' parameter is not provided.
    * @returns {Promise} A Promise that resolves when the screen view tracking is complete.
@@ -95,13 +96,13 @@ class MatomoTracker {
    * // Tracking a screen view with additional user information
    * trackScreenView({ name: 'Product Details', userInfo: { uid: '123456' } });
    */
-  trackScreenView({ name, userInfo = {} }) {
+  trackScreenView({ name, url, userInfo = {} }) {
     if (!name) {
       throw new Error('Error: The "name" parameter is required for tracking a screen view.');
     }
     this.updateUserInfo(userInfo);
 
-    return this.trackAction({ name: `Screen / ${name}` });
+    return this.trackAction({ name: `Screen / ${name}`, url });
   }
 
   /**
@@ -111,6 +112,7 @@ class MatomoTracker {
    *
    * @param {Object} options - Options for tracking the action.
    * @param {string} options.name - The title of the action being tracked. Use slashes (/) to set one or several categories for this action. For example, 'Help / Feedback' will create the Action 'Feedback' in the category 'Help'.
+   * @param {string} [options.url] - The full URL for the current action.
    * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information. See {@link https://developer.matomo.org/api-reference/tracking-api#optional-user-info} for details.
    * @throws {Error} Throws an error if the 'name' parameter is not provided.
    * @returns {Promise} A Promise that resolves when the action tracking is complete.
@@ -125,13 +127,13 @@ class MatomoTracker {
    *
    * @see {@link https://developer.matomo.org/api-reference/tracking-api#recommended-parameters|Matomo Tracking API - Recommended Parameters}
    */
-  trackAction({ name, userInfo = {} }) {
+  trackAction({ name, url, userInfo = {} }) {
     if (!name) {
       throw new Error('Error: The "name" parameter is required for tracking an action.');
     }
     this.updateUserInfo(userInfo);
 
-    return this.track({ action_name: name });
+    return this.track({ action_name: name, url });
   }
 
   /**
@@ -145,6 +147,7 @@ class MatomoTracker {
    * @param {string} [options.name] - The event name. (e.g., a Movie name, or Song name, or File name...)
    * @param {number|float} [options.value] - The event value. Must be a float or integer value (numeric), not a string.
    * @param {string} [options.campaign] - The event related campaign.
+   * @param {string} [options.url] - The full URL for the current action.
    * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information. See {@link https://developer.matomo.org/api-reference/tracking-api#optional-user-info} for details.
    * @throws {Error} Throws an error if the 'category' or 'action' parameters are not provided.
    * @returns {Promise} A Promise that resolves when the event tracking is complete.
@@ -159,7 +162,7 @@ class MatomoTracker {
    *
    * @see {@link https://developer.matomo.org/api-reference/tracking-api#optional-event-trackinghttpsmatomoorgdocsevent-tracking-info|Matomo Tracking API - Event Tracking}
    */
-  trackEvent({ category, action, name, value, campaign, userInfo = {} }) {
+  trackEvent({ category, action, name, value, campaign, url, userInfo = {} }) {
     if (!category) {
       throw new Error('Error: The "category" parameter is required for tracking an event.');
     }
@@ -174,6 +177,7 @@ class MatomoTracker {
       e_n: name,
       e_v: value,
       mtm_campaign: campaign,
+      url,
     });
   }
 
@@ -187,6 +191,7 @@ class MatomoTracker {
    * @param {string} [options.piece] - The actual content piece. For instance the path to an image, video, audio, any text.
    * @param {string} [options.target] - The target of the content. For instance the URL of a landing page.
    * @param {string} [options.interaction] - The name of the interaction with the content. For instance a 'click'.
+   * @param {string} [options.url] - The full URL for the current action.
    * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information. See {@link https://developer.matomo.org/api-reference/tracking-api#optional-user-info} for details.
    * @throws {Error} Throws an error if the 'name' is not provided.
    * @returns {Promise} A Promise that resolves when the content tracking is complete.
@@ -201,7 +206,7 @@ class MatomoTracker {
    *
    * @see {@link https://developer.matomo.org/api-reference/tracking-api#optional-content-trackinghttpsmatomoorgdocscontent-tracking-info|Matomo Tracking API - Content Tracking}
    */
-  trackContent({ name, piece, target, interaction, userInfo = {} }) {
+  trackContent({ name, piece, target, interaction, url, userInfo = {} }) {
     if (!name) {
       throw new Error('Error: The "name" parameter is required for tracking a content.');
     }
@@ -212,6 +217,7 @@ class MatomoTracker {
       c_p: piece,
       c_t: target,
       c_i: interaction,
+      url,
     });
   }
 
@@ -224,6 +230,7 @@ class MatomoTracker {
    * @param {string} options.keyword - The site search keyword. When specified, the request will not be tracked as a normal page view but will instead be tracked as a Site Search request.
    * @param {string} [options.category] - Optional. When the 'keyword' parameter is specified, you can optionally specify a search category with this parameter.
    * @param {number} [options.count] - Optional. When the 'keyword' parameter is specified, it is recommended to set 'search_count' to the number of search results displayed on the results page. When keywords are tracked with '&search_count=0', they will appear in the "No Result Search Keyword" report.
+   * @param {string} [options.url] - Optional. The full URL for the current action.
    * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information. See {@link https://developer.matomo.org/api-reference/tracking-api#optional-user-info} for details.
    * @throws {Error} Throws an error if the 'keyword' parameter is not provided.
    * @returns {Promise} A Promise that resolves when the site search tracking is complete.
@@ -238,7 +245,7 @@ class MatomoTracker {
    *
    * @see {@link https://developer.matomo.org/api-reference/tracking-api#optional-action-info-measure-page-view-outlink-download-site-search|Matomo Tracking API - Site Search Tracking}
    */
-  trackSiteSearch({ keyword, category, count, userInfo = {} }) {
+  trackSiteSearch({ keyword, category, count, url, userInfo = {} }) {
     if (!keyword) {
       throw new Error('Error: The "keyword" parameter is required for tracking a site search.');
     }
@@ -248,6 +255,7 @@ class MatomoTracker {
       search: keyword,
       search_cat: category,
       search_count: count,
+      url,
     });
   }
 
@@ -258,6 +266,7 @@ class MatomoTracker {
    *
    * @param {Object} options - Options for tracking the link click.
    * @param {string} options.link - An external URL the user has opened. Used for tracking outlink clicks.
+   * @param {string} [options.url] - The full URL for the current action.
    * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information. See {@link https://developer.matomo.org/api-reference/tracking-api#optional-user-info} for details.
    * @throws {Error} Throws an error if the 'link' parameter is not provided.
    * @returns {Promise} A Promise that resolves when the link click tracking is complete.
@@ -272,13 +281,13 @@ class MatomoTracker {
    *
    * @see {@link https://developer.matomo.org/api-reference/tracking-api#optional-action-info-measure-page-view-outlink-download-site-search|Matomo Tracking API - Outlink Tracking}
    */
-  trackLink({ link, userInfo = {} }) {
+  trackLink({ link, url, userInfo = {} }) {
     if (!link) {
       throw new Error('Error: The "link" parameter is required for tracking a link click.');
     }
     this.updateUserInfo(userInfo);
 
-    return this.track({ link, url: link });
+    return this.track({ link, url });
   }
 
   /**
@@ -288,6 +297,7 @@ class MatomoTracker {
    *
    * @param {Object} options - Options for tracking the file download.
    * @param {string} options.download - URL of a file the user has downloaded. Used for tracking downloads.
+   * @param {string} [options.url] - The full URL for the current action.
    * @param {Object} [options.userInfo={}] - Optional data used for tracking different user information. See {@link https://developer.matomo.org/api-reference/tracking-api#optional-user-info} for details.
    * @throws {Error} Throws an error if the 'download' parameter is not provided.
    * @returns {Promise} A Promise that resolves when the download tracking is complete.
@@ -302,13 +312,13 @@ class MatomoTracker {
    *
    * @see {@link https://developer.matomo.org/api-reference/tracking-api#optional-action-info-measure-page-view-outlink-download-site-search|Matomo Tracking API - Download Tracking}
    */
-  trackDownload({ download, userInfo = {} }) {
+  trackDownload({ download, url, userInfo = {} }) {
     if (!download) {
       throw new Error('Error: The "download" parameter is required for tracking a file download.');
     }
     this.updateUserInfo(userInfo);
 
-    return this.track({ download, url: download });
+    return this.track({ download, url });
   }
 
   /**
